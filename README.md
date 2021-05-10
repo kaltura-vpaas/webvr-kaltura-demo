@@ -1,6 +1,10 @@
 # Kaltura Virtual Reality Player
 A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura.com/player/web/getting-started-web) inside of WebVR player using the https://aframe.io/ VR framework. 
 
+## Demo:
+
+![main](readme-assets/main.png)
+
 ## Requirements:
 
 1. [Nodejs](https://nodejs.org/en/)

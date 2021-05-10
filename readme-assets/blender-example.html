@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en">
+<!-- Generated automatically by AFRAME Exporter for Blender - https://silverslade.itch.io/a-frame-blender-exporter -->
+
+<head>
+  <title>WebXR Application</title>
+  <link rel="icon" type="image/png" href="favicon.ico" />
+  <meta name="description" content="3D Application">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/donmccurdy/aframe-extras@v6.1.0/dist/aframe-extras.min.js"></script>
+  <script type="text/javascript" src="blender-example/js/webxr.js"></script>
+  <script type="text/javascript" src="blender-example/js/joystick.js"></script>
+  <script type="text/javascript" src="blender-example/js/camera-cube-env.js"></script>
+  <link rel="stylesheet" type="text/css" href="blender-example/style.css">
+
+  <script type="text/javascript"
+    src="https://cdnapisec.kaltura.com/p/3033241/embedPlaykitJs/uiconf_id/46516743"></script>
+
+  <script type="text/javascript">
+    AFRAME.registerComponent("button", {
+      init: function () {
+        this.playerEl = document.getElementById("example-video");
+        this.el.addEventListener("click", () => {
+          this.playerEl.player.play();
+        });
+      },
+    });
+
+    var container, scene, camera, renderer;
+    var video, videoImage, videoImageContext, videoTexture, player;
+    var trackToShow = -1;
+    AFRAME.registerComponent("test", {
+      schema: {
+        color: { default: "green" },
+        size: { type: "int", default: 5 },
+        position: { type: "vec3", default: { x: 0, y: 0, z: 0 } },
+        rotation: { type: "vec3", default: { x: 20, y: 40, z: 25 } },
+      },
+      init: function () {
+        // sets a-box color to green
+        this.el.setAttribute("color", this.data.color);
+        // color coding debugging. if the a-box color is
+        // green : there was an error in init script
+        // white : the video either finished (no loop) or did not load
+        // first frame of video : autoplay did not initiate and needs to have manual click
+        // random frame in video : for live video playback, the stream stopped
+
+        //instanciate player
+        try {
+          const config = {
+            playback: {
+              autoplay: true,
+              allowMutedAutoPlay: true
+            },
+            log: { level: "DEBUG" },
+            targetId: "video-player",
+            provider: {
+              partnerId: "3033241",
+              uiConfId: "46516743"
+            },
+            text: {
+              useNativeTextTrack: true
+            }
+          };
+          player = KalturaPlayer.setup(config);
+        } catch (e) {
+          console.error(e.message);
+        }
+
+        player.loadMedia({ entryId: '1_fiwvhdka' });
+        player.crossOrigin = "anonymous";
+        player.play();
+
+        // create canvas where the images of video are going to be drawn
+        videoImage = document.createElement("canvas");
+        videoImage.width = 1280;
+        videoImage.height = 720;
+        videoImageContext = videoImage.getContext("2d");
+
+        videoImageContext.fillStyle = "#000000";
+        videoImageContext.fillRect(0, 0, videoImage.width, videoImage.height);
+
+        // setup text parameters for subtitles
+        videoImageContext.font = "50px Arial";
+        videoImageContext.textAlign = "center";
+        videoImageContext.textBaseline = "middle";
+
+        // create threejs texture which is mapping canvas to texture
+        videoTexture = new THREE.Texture(videoImage);
+        videoTexture.minFilter = THREE.LinearFilter;
+        videoTexture.magFilter = THREE.LinearFilter;
+
+        // create material from texture
+        var movieMaterial = new THREE.MeshBasicMaterial({
+          map: videoTexture,
+          side: THREE.DoubleSide,
+        });
+
+        // assign material to this object's mash
+        this.el.getObject3D("mesh").material = movieMaterial;
+      },
+      update: function () { },
+      tick: function () {
+        // on every frame, check if new video frame is loaded and draw the image onto canvas
+        if (!player.paused) {
+          // draw video image
+          videoImageContext.drawImage(player.getVideoElement(), 0, 0, 1280, 720);
+
+          var video = player.getVideoElement();
+
+          // will attempt to retrieve subtitles if language track is set and active cue(text to display) available for this frame
+          if (
+            trackToShow > -1 &&
+            "activeCues" in video.textTracks[trackToShow] &&
+            video.textTracks[trackToShow].activeCues &&
+            video.textTracks[trackToShow].activeCues.length > 0
+          ) {
+            //console.log('track in video, ', video.textTracks[trackToShow].activeCues[0].text, video.textTracks[trackToShow].activeCues.length)
+            //console.log(video.textTracks)
+            var fontSize = parseInt(videoImageContext.font);
+            var marginTextBoxOffset = 1.2;
+            var text = video.textTracks[trackToShow].activeCues[0].text;
+
+            //videoImageContext.font = `${fontSize}px Arial`;
+            // measures how wide the text is going to be in pixels
+            var textWidth = videoImageContext.measureText(text).width;
+
+            //will draw and 50% transparent white box behind the text to make the text better visible
+            videoImageContext.fillStyle = "rgba(255, 255, 255, 0.5)";
+            videoImageContext.fillRect(
+              1280 / 2 - (textWidth * marginTextBoxOffset) / 2,
+              (720 / 8) * 7 - (fontSize * marginTextBoxOffset) / 2,
+              textWidth * marginTextBoxOffset,
+              fontSize * marginTextBoxOffset
+            );
+
+            // draw text
+            videoImageContext.fillStyle = "black";
+            videoImageContext.fillText(text, 1280 / 2, (720 / 8) * 7);
+          }
+
+          if (videoTexture) {
+            // make sure to tell the video texture that needs update on every frame
+            videoTexture.needsUpdate = true;
+          }
+        }
+      },
+      remove: function () { },
+      pause: function () { },
+      play: function () { },
+    });
+    
+    document.addEventListener('click', function (evt) {
+      console.log('This 2D element was clicked!');
+      player.muted = false;
+    });
+
+  </script>
+</head>
+
+<body onload="init();">
+  <div id="video-player" style="display: none"></div>
+
+  <a-scene shadow="type: basic; autoUpdate: false;">
+
+    <!-- Assets -->
+    <a-assets>
+      <a-asset-item id="Cube" src="blender-example/assets/Cube.gltf"></a-asset-item>
+      <a-asset-item id="Object_10" src="blender-example/assets/Object_10.gltf"></a-asset-item>
+      <a-asset-item id="Object_11" src="blender-example/assets/Object_11.gltf"></a-asset-item>
+      <a-asset-item id="Object_12" src="blender-example/assets/Object_12.gltf"></a-asset-item>
+      <a-asset-item id="Object_13" src="blender-example/assets/Object_13.gltf"></a-asset-item>
+      <a-asset-item id="Object_14" src="blender-example/assets/Object_14.gltf"></a-asset-item>
+      <a-asset-item id="Object_15" src="blender-example/assets/Object_15.gltf"></a-asset-item>
+      <a-asset-item id="Object_16" src="blender-example/assets/Object_16.gltf"></a-asset-item>
+      <a-asset-item id="Object_17" src="blender-example/assets/Object_17.gltf"></a-asset-item>
+      <a-asset-item id="Object_18" src="blender-example/assets/Object_18.gltf"></a-asset-item>
+      <a-asset-item id="Object_19" src="blender-example/assets/Object_19.gltf"></a-asset-item>
+      <a-asset-item id="Object_3" src="blender-example/assets/Object_3.gltf"></a-asset-item>
+      <a-asset-item id="Object_4" src="blender-example/assets/Object_4.gltf"></a-asset-item>
+      <a-asset-item id="Object_5" src="blender-example/assets/Object_5.gltf"></a-asset-item>
+      <a-asset-item id="Object_6" src="blender-example/assets/Object_6.gltf"></a-asset-item>
+      <a-asset-item id="Object_7" src="blender-example/assets/Object_7.gltf"></a-asset-item>
+      <a-asset-item id="Object_8" src="blender-example/assets/Object_8.gltf"></a-asset-item>
+      <a-asset-item id="Object_9" src="blender-example/assets/Object_9.gltf"></a-asset-item>
+      <img id="sky" src="blender-example/resources/sky.jpg">
+      <img id="icon-play" src="blender-example/resources/play.png">
+      <img id="icon-pause" src="blender-example/resources/pause.png">
+      <img id="icon-play-skip-back" src="blender-example/resources/play-skip-back.png">
+      <img id="icon-mute" src="blender-example/resources/mute.png">
+      <img id="icon-volume-low" src="blender-example/resources/volume-low.png">
+      <img id="icon-volume-high" src="blender-example/resources/volume-high.png">
+    </a-assets>
+
+    <a-box test height="7.2" depth="12.8" position="-13.982090950012207 8.457517623901367 2.251915454864502"
+      visible="true" shadow="cast: false"></a-box>
+    <a-entity id="#Object_10" gltf-model="#Object_10" scale="1 1 1"
+      position="0.45024773478507996 -0.8547438383102417 5.831934928894043" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_11" gltf-model="#Object_11" scale="1 1 1"
+      position="-0.2610612213611603 -2.4771995544433594 1.4609827995300293" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_12" gltf-model="#Object_12" scale="1 1 1"
+      position="-0.22825685143470764 11.46965503692627 -10.85545539855957" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_13" gltf-model="#Object_13" scale="1 1 1"
+      position="0.521594762802124 -0.5279383659362793 -0.3833675980567932" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_14" gltf-model="#Object_14" scale="1 1 1"
+      position="-0.050434552133083344 1.0163205862045288 -2.09911847114563" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_15" gltf-model="#Object_15" scale="1 1 1"
+      position="-0.5936673879623413 6.331045150756836 -11.513439178466797" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_16" gltf-model="#Object_16" scale="1 1 1"
+      position="-0.043987493962049484 0.16777080297470093 -1.3193265199661255" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_17" gltf-model="#Object_17" scale="1 1 1"
+      position="0.22257941961288452 1.5661871433258057 -0.5759723782539368" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_18" gltf-model="#Object_18" scale="1 1 1"
+      position="0.43155157566070557 -1.3092501163482666 -0.4817149043083191" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_19" gltf-model="#Object_19" scale="1 1 1"
+      position="-0.12706492841243744 -1.6501669883728027 2.271592855453491" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_3" gltf-model="#Object_3" scale="1 1 1"
+      position="-13.757585525512695 11.172548294067383 1.4465874433517456" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_4" gltf-model="#Object_4" scale="1 1 1"
+      position="-0.25383031368255615 4.385625839233398 -11.430194854736328" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_5" gltf-model="#Object_5" scale="1 1 1"
+      position="13.362335205078125 11.172548294067383 1.4465872049331665" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_6" gltf-model="#Object_6" scale="1 1 1"
+      position="0.5808228850364685 1.1587707996368408 -0.382016658782959" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_7" gltf-model="#Object_7" scale="1 1 1"
+      position="-5.605254173278809 -0.8547440767288208 -0.7687953114509583" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_8" gltf-model="#Object_8" scale="1 1 1"
+      position="0.4359566867351532 -0.8547441959381104 -6.211704254150391" visible="true" shadow="cast: false">
+    </a-entity>
+    <a-entity id="#Object_9" gltf-model="#Object_9" scale="1 1 1"
+      position="6.451201915740967 -0.8547441959381104 -0.7669207453727722" visible="true" shadow="cast: false">
+    </a-entity>
+
+    <!-- Camera -->
+    <a-entity id="player" movement-controls="speed: 1;" look-controls>
+      <a-entity camera="near:0.1" id="camera" position="4 4.5 5" rotation="-5 60 0" >
+    
+      </a-entity>
+      <a-entity id="leftHand" oculus-touch-controls="hand: left" vive-controls="hand: left"></a-entity>
+      <a-entity id="rightHand" laser-controls oculus-touch-controls="hand: right" vive-controls="hand: right">
+      </a-entity>
+    </a-entity>
+
+    <!-- Lights -->
+    <a-entity
+      light="intensity: 1.0; castShadow: false; shadowBias: -0.001; shadowCameraFar: 501.02; shadowCameraBottom: 12; shadowCameraFov: 101.79; shadowCameraNear: 0; shadowCameraTop: -5; shadowCameraRight: 10; shadowCameraLeft: -10; shadowRadius: 2"
+      position="1.36586 7.17965 1"></a-entity>
+    <a-entity light="type: ambient; intensity: 1.0"></a-entity>
+
+    <!-- Sky -->
+    <a-sky color="#ECECEC"></a-sky>
+  </a-scene>
+</body>
+
+</html>
+<!-- Generated automatically by AFRAME Exporter for Blender - https://silverslade.itch.io/a-frame-blender-exporter -->
