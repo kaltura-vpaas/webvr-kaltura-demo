@@ -4,7 +4,7 @@
   "license": "AGPL-3.0",
   "private": true,
   "scripts": {
-    "start": "./bin/www",
+    "start": "nodemon --inspect ./bin/www",
     "dev": "DEBUG=kaltura-node-template:* nodemon --inspect ./bin/www"
   },
   "dependencies": {
