@@ -5,7 +5,7 @@ A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura
 
 [Click here for demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/blender-example.html)
 
-![main](readme-assets/main.png)
+![main](readme-assets/main.jpg)
 
 
 
@@ -26,6 +26,8 @@ A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura
 ###  Proof of Concept
 
 [Proof of concept demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/poc.html) 
+
+![poc](readme-assets/poc.jpg)
 
 This is the bare minimum of code to run a Kaltura player inside of an aframe WebVR scene. 
 
@@ -140,6 +142,10 @@ And due to browsers muting video that autoplays, an event listener is created to
 
 ### Captions Example
 
+[Captions Demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/captions.html)
+
+![captions](readme-assets/captions.jpg)
+
 Normally, the Kaltura player handles captions out of the box at the [API](https://developer.kaltura.com/workflows/Enrich_and_Organize_Metadata) level and also simply through the [KMC](https://kmc.kaltura.com/index.php/kmcng/login)
 
 However, in the context of this WebVR example, some extra work must be done to make captions work. 
@@ -218,6 +224,10 @@ Finally, through some math, the text is drawn in the correct location:
 
 ### Blender WebVR Example:
 
+[Blender demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/blender-example.html)
+
+![main](readme-assets/main.jpg)
+
 Most 3d scenes are created in 3d creation application like the popular free and open source [Blender](https://www.blender.org/)
 
 In this example, Blender was used to create a scene that integrates the video player from the above examples into a more real-world use case. 
@@ -231,11 +241,11 @@ A free, opensource ready-made scene was downloaded from https://sketchfab.com/fe
 
 In the scene, a placeholder cube was created in the same dimensions (16:9) as the video and placed exactly where the video will go. 
 
-![blender_cube](readme-assets/blender_cube.png)
+![blender_cube](readme-assets/blender_cube.jpg)
 
 Once you are satisfied with you scene, use the aframe exporter to export an aframe scene:
 
-# ![blender_aframe](readme-assets/blender_aframe.png) 
+# ![blender_aframe](readme-assets/blender_aframe.jpg) 
 
 
 
