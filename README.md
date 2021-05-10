@@ -247,7 +247,16 @@ Once you are satisfied with you scene, use the aframe exporter to export an afra
 
 # ![blender_aframe](readme-assets/blender_aframe.jpg) 
 
+Finally, find the cube asset you created as a placeholder, and change it to an `aframe` box. You will have to experiment with dimensions of the box between `height`, `width` and `depth` , but the position will be correct:
 
+```html
+ <a-box test height="7.2" depth="12.8" position="-13.982090950012207 8.457517623901367 2.251915454864502"
+      visible="true" shadow="cast: false"></a-box>
+```
+
+As you see above, the `test` identifier was given to the box, and the same `aframe` registration code was used to initialize this box and make it a playing video. 
+
+# Contributing
 
 Thank you for helping Kaltura grow! If you'd like to contribute please follow these steps:
 
