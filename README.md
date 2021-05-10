@@ -3,7 +3,11 @@ A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura
 
 ## Demo:
 
+[Click here for demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/blender-example.html)
+
 ![main](readme-assets/main.png)
+
+
 
 ## Requirements:
 
@@ -21,7 +25,7 @@ A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura
 
 ###  Proof of Concept
 
-​	Demo: 
+[Proof of concept demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/poc.html) 
 
 This is the bare minimum of code to run a Kaltura player inside of an aframe WebVR scene. 
 
