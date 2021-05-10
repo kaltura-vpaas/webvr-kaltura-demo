@@ -239,7 +239,7 @@ In this example, Blender was used to create a scene that integrates the video pl
 
 A free, opensource ready-made scene was downloaded from https://sketchfab.com/feed (you'll want to install the importer plugin for Blender)
 
-In the scene, a placeholder cube was created in the same dimensions (16:9) as the video and placed exactly where the video will go. 
+In the scene, a placeholder cube was created in the same dimensions (16:9) as the video and placed exactly where the video will appear in the final scene. 
 
 ![blender_cube](readme-assets/blender_cube.jpg)
 
@@ -247,7 +247,7 @@ Once you are satisfied with you scene, use the aframe exporter to export an afra
 
 # ![blender_aframe](readme-assets/blender_aframe.jpg) 
 
-Finally, find the cube asset you created as a placeholder, and change it to an `aframe` box. You will have to experiment with dimensions of the box between `height`, `width` and `depth` , but the position will be correct:
+In the `index.html` produced by the aframe exporter,  find the cube asset you created as a placeholder, and change it to an `aframe` box. You will have to experiment with dimensions of the box between `height`, `width` and `depth` , but the position will be correct:
 
 ```html
  <a-box test height="7.2" depth="12.8" position="-13.982090950012207 8.457517623901367 2.251915454864502"
