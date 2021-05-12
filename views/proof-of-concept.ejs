@@ -87,9 +87,13 @@
       },
       update: function () { },
       tick: function () {
-        //on every frame, check if new video frame is loaded and draw the image onto canvas
-        //make sure videoImageContext is defined to avoid race condition. 
-        if (!player.paused && videoImageContext) {
+         // on every frame, check if new video frame is loaded and draw the image onto canvas
+        // protect against race conditions where videoImageContext or player.getVideoElement()
+        // not defined yet
+        if (!player.paused 
+        && videoImageContext
+        && player.getVideoElement()) {
+          
           // draw video image
           videoImageContext.drawImage(player.getVideoElement(), 0, 0, 1280, 720);
 
