@@ -105,7 +105,7 @@
       update: function () { },
       tick: function () {
         // on every frame, check if new video frame is loaded and draw the image onto canvas
-        if (!player.paused) {
+        if (!player.paused && videoImageContext) {
           // draw video image
           videoImageContext.drawImage(player.getVideoElement(), 0, 0, 1280, 720);
 
