@@ -6,3 +6,21 @@ body {
 a {
   color: #00B7FF;
 }
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#back2vr {
+  border:1px black solid;
+  padding:10px;
+  margin:5px;
+  border-radius: 5px;
+  font-size: 20px;
+}
+
+#back2vr:hover {
+  background-color: whitesmoke;
+}
