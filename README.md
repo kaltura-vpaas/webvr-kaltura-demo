@@ -140,6 +140,10 @@ And due to browsers muting video that autoplays, an event listener is created to
 
 
 
+### Clickable Video
+
+[Clickable Video Demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/video-click.html)
+
 ### Captions Example
 
 [Captions Demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/captions.html)
