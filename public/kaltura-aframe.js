@@ -1,5 +1,4 @@
-function loadKalturaWebVR(boxId, videoSource,entryId, partnerId, playerId, ks ) {
-    var videoImage, videoImageContext, videoTexture, player;
+function loadKalturaWebVR(boxId, videoSource, entryId, partnerId, playerId, ks) {
 
     AFRAME.registerComponent(boxId, {
         schema: {
@@ -35,37 +34,37 @@ function loadKalturaWebVR(boxId, videoSource,entryId, partnerId, playerId, ks ) 
                         useNativeTextTrack: true
                     }
                 };
-                player = KalturaPlayer.setup(config);
+                this.player = KalturaPlayer.setup(config);
             } catch (e) {
                 console.error(e.message);
             }
 
-            player.loadMedia({ entryId: entryId });
-            player.crossOrigin = "anonymous";
+            this.player.loadMedia({ entryId: entryId });
+            this.player.crossOrigin = "anonymous";
 
-            player.ready().then((res) => {
+            this.player.ready().then((res) => {
                 // create canvas where the images of video are going to be drawn
-                videoImage = document.createElement("canvas");
-                videoImage.width = 1280;
-                videoImage.height = 720;
-                videoImageContext = videoImage.getContext("2d");
+                this.videoImage = document.createElement("canvas");
+                this.videoImage.width = 1280;
+                this.videoImage.height = 720;
+                this.videoImageContext = this.videoImage.getContext("2d");
 
-                videoImageContext.fillStyle = "#000000";
-                videoImageContext.fillRect(0, 0, videoImage.width, videoImage.height);
+                this.videoImageContext.fillStyle = "#000000";
+                this.videoImageContext.fillRect(0, 0, this.videoImage.width, this.videoImage.height);
 
                 // setup text parameters for subtitles
-                videoImageContext.font = "50px Arial";
-                videoImageContext.textAlign = "center";
-                videoImageContext.textBaseline = "middle";
+                this.videoImageContext.font = "50px Arial";
+                this.videoImageContext.textAlign = "center";
+                this.videoImageContext.textBaseline = "middle";
 
                 // create threejs texture which is mapping canvas to texture
-                videoTexture = new THREE.Texture(videoImage);
-                videoTexture.minFilter = THREE.LinearFilter;
-                videoTexture.magFilter = THREE.LinearFilter;
+                this.videoTexture = new THREE.Texture(this.videoImage);
+                this.videoTexture.minFilter = THREE.LinearFilter;
+                this.videoTexture.magFilter = THREE.LinearFilter;
 
                 // create material from texture
                 var movieMaterial = new THREE.MeshBasicMaterial({
-                    map: videoTexture,
+                    map: this.videoTexture,
                     side: THREE.DoubleSide,
                 });
 
@@ -79,17 +78,17 @@ function loadKalturaWebVR(boxId, videoSource,entryId, partnerId, playerId, ks ) 
             // on every frame, check if new video frame is loaded and draw the image onto canvas
             // protect against race conditions where videoImageContext or player.getVideoElement()
             // not defined yet
-            if (!player.paused
-                && videoImageContext
-                && player.getVideoElement()) {
+            if (!this.player.paused
+                && this.videoImageContext
+                && this.player.getVideoElement()) {
 
                 // draw video image
-                videoImageContext.drawImage(player.getVideoElement(), 0, 0, 1280, 720);
+                this.videoImageContext.drawImage(this.player.getVideoElement(), 0, 0, 1280, 720);
 
-                var video = player.getVideoElement();
-                if (videoTexture) {
+
+                if (this.videoTexture) {
                     // make sure to tell the video texture that needs update on every frame
-                    videoTexture.needsUpdate = true;
+                    this.videoTexture.needsUpdate = true;
                 }
             }
         },
@@ -99,18 +98,21 @@ function loadKalturaWebVR(boxId, videoSource,entryId, partnerId, playerId, ks ) 
     });
 }
 
-function initVidClick(boxDomId, videoSource) {
+function initVidClick(boxDomId, videoSource, boxComponent) {
     var targetEl = document.querySelector("#" + boxDomId);
+    var player = targetEl.components[boxComponent].player;
+   
     targetEl.addEventListener('click', function () {
-        console.log("EGG");
         $("#mainscene").hide();
-        $("#"+videoSource).show();
+        $("#" + videoSource).show();
         $("#back2vr").show();
+        player.muted = false;
     });
 
     $("#back2vr").click(function () {
-        $("#"+videoSource).hide();
+        $("#" + videoSource).hide();
         $("#back2vr").hide();
         $("#mainscene").show();
+        player.muted = true;
     });
 }
