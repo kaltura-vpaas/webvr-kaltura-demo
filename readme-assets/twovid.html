@@ -1,0 +1,55 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Kaltura AFrame Proof of Concept</title>
+  <meta name="description" content="Kaltura-AFrame-Proof-of-Concept" />
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="./three.min.js"></script>
+  <script src="./kaltura-aframe.js"></script>
+  <link rel="stylesheet" href="stylesheets/style.css">
+
+  <script type="text/javascript"
+    src="https://cdnapisec.kaltura.com/p/3033241/embedPlaykitJs/uiconf_id/46516743"></script>
+
+  <script type="text/javascript">
+    //document.addEventListener('click', function (evt) {
+    //  player.muted = false;
+    //});
+    loadKalturaWebVR("box1", "vid1", "1_fiwvhdka", 3033241, 46516743, "");
+    loadKalturaWebVR("box2", "vid2", "1_vyyjrwqc", 3033241, 46516743, "");
+  </script>
+
+</head>
+
+<body>
+
+  <!-- Kaltura Player -->
+  <div id="vid1" style="display: none; aspect-ratio:16/9; max-height: 85vh; margin: auto;"></div>
+  <div id="vid2" style="display: none; aspect-ratio:16/9; max-height: 85vh; margin: auto;""></div>
+
+  <div class=" center">
+    <div id="back2vr" style="display:none;">Return</div>
+  </div>
+
+  <a-scene id="mainscene" raycaster cursor="rayOrigin: mouse;">
+
+    <!-- The video box-->
+    <a-box box1 id="vidbox1" position="5 0 0" rotation="0 -10 0" width="4" height="2" depth="0.001"></a-box>
+    <a-box box2 id="vidbox2" position="0 0 0" rotation="0 10 0" width="4" height="2" depth="0.001"></a-box>
+
+    <a-entity id="rig" movement-controls wasd-controls="acceleration: 500" position="2.5 0 4">
+      <a-entity camera="active:true" position="0 0 0" look-controls="pointerLockEnabled: true"></a-entity>
+  </a-scene>
+
+  <script type="text/javascript">
+    initVidClick("vidbox1", "vid1");
+    initVidClick("vidbox2", "vid2");
+  </script>
+
+</body>
+
+</html>
