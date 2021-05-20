@@ -1,11 +1,11 @@
 # Kaltura Virtual Reality Player
-A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura.com/player/web/getting-started-web) inside of WebVR player using the https://aframe.io/ VR framework. 
+A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura.com/player/web/getting-started-web) inside of WebVR player using the https://a-frame.io/ VR framework. 
 
 ## Demo:
 
-[Click here for demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/blender-example.html)
+[Click here for demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/twovid.html)
 
-![main](readme-assets/main.jpg)
+![main](readme-assets/twovid.jpg)
 
 
 
@@ -29,7 +29,7 @@ A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura
 
 ![poc](readme-assets/poc.jpg)
 
-This is the bare minimum of code to run a Kaltura player inside of an aframe WebVR scene. 
+This is the bare minimum of code to run a Kaltura player inside of an a-frame WebVR scene. 
 
 First the Kaltura Player code is retrieved for your account: 
 
@@ -60,22 +60,23 @@ Next, take a look at the body:
 
 First a div `video-player` is created to inject the Kaltura player into, but it is not actually displayed, this will be explained later.
 
-Next, some static `aframe` objects are created, these are not necessary, but show how this the Kaltura player can be injected into a scene of any complexity or a simple one like this example. 
+Next, some static `a-frame` objects are created, these are not necessary, but show how the Kaltura player can be injected into a scene of any complexity or a simple one like this example. 
 
-Finally, the `aframe` object that will become the video player: 
+Finally, the `a-frame` object that will become the video player: 
 
 ```html
 <a-box 3dvid position="0 2 -4" rotation="20 40 25" width="4" height="2" ></a-box>
-
-This is a normal `aframe` box object. However, notice the `3dvid` attribute. This is an arbitrary string with no special meaning used to identify this box for `aframe`
-
-Next, the box will be combined with the video:
-
-​```javascript
- AFRAME.registerComponent("3dvid", {
 ```
 
-Notice the `3dvid` tag from the html is used to identify and register the specific box component with `aframe`
+This is a normal `a-frame` box object. However, notice the `3dvid` attribute. In a-frame terms this is a `name` used to identify this box.
+
+Next, the box is registered with a-frame.
+
+```javascript
+AFRAME.registerComponent("3dvid", {
+```
+
+Notice the `3dvid` attribute declared in the html is used to identify and register the specific box component with `a-frame`
 
 Next the Kaltura player is loaded as it would normally be in any context:
 
@@ -103,7 +104,7 @@ Next the Kaltura player is loaded as it would normally be in any context:
         player.loadMedia({ entryId: '<%=process.env.ENTRY_ID%>' });
 ```
 
-Now, through a clever use of `three.js` and the `<canvas>` element each frame of the Kaltura video is captured, buffered through the canvas and drawn onto the `aframe` box element:
+Now, through a clever use of `three.js` and the `<canvas>` element each frame of the Kaltura video is captured, buffered through the canvas and drawn onto the `a-frame` box element:
 
 ```javascript
           // create threejs texture which is mapping canvas to texture
@@ -143,6 +144,91 @@ And due to browsers muting video that autoplays, an event listener is created to
 ### Clickable Video
 
 [Clickable Video Demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/video-click.html)
+
+![video-click](readme-assets/video-click.jpg)
+
+In this example we create a user experience when a video object in the vr scene is clicked it will proceed to play the video in a 2d "normal" experience. A return button is created so the user can return to the 3d scene. 
+
+in the html:
+
+```html
+  <!-- Kaltura Player -->
+  <div id="video-player" style="display:none; aspect-ratio:16/9; max-height: 85vh; margin: auto;"></div>
+  <div class="center">
+    <div id="back2vr" style="display:none;">Return</div>
+  </div>
+
+  <a-scene id="mainscene" raycaster cursor="rayOrigin: mouse">
+    <!-- The video box-->
+    <a-box 3dvid id="vidbox"> </a-box>
+  </a-scene>
+```
+
+and javascript:
+
+```javascript
+  <script type="text/javascript">
+    var targetEl = document.querySelector('#vidbox');
+    targetEl.addEventListener('click', function () {
+        //hide aframe scene
+        $("#mainscene").hide();
+        //show video
+        $("#video-player").show();
+        //show return button
+        $("#back2vr").show();
+    });
+
+    $("#back2vr").click(function () {
+      $("#video-player").hide();
+      $("#back2vr").hide();
+      $("#mainscene").show();
+    });
+  </script>
+```
+
+
+
+### Multiple Clickable Video and Kaltura WebVR Framework
+
+[Multiple Click Video Demo](https://kaltura-vpaas.github.io/webvr-kaltura-demo/readme-assets/video-click.html)
+
+![twovid](readme-assets/twovid.jpg)
+
+The single click example before was a building block, but it does not scale to multiple videos. In order to handle multiple videos all of the code built thus far needs to be encapsulated so that it can be reused. So [kaltura-aframe.js](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/public/kaltura-aframe.js) was created: 
+
+```javascript
+function loadKalturaWebVR(boxName, videoSource, entryId, partnerId, playerId, ks) {
+    AFRAME.registerComponent(boxName, {
+        schema: {
+```
+
+All the variables have been parameterized. Take note of variable scope. In the previous examples, the `player` was declared at global scope, however in [kaltura-aframe.js](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/public/kaltura-aframe.js) variables are scoped to the special javascript reserved keyword `this`
+
+```javascript
+this.player = KalturaPlayer.setup(config);
+```
+
+Keep in mind the context of `this` is inside of the [AFRAME framework's prototype](https://aframe.io/docs/1.2.0/core/component.html#component-prototype-properties).
+
+The Kaltura `player` is created inside of a-frame's init [lifecycle](https://aframe.io/docs/1.2.0/core/component.html#definition-lifecycle-handler-methods) method, stored in `this`:
+
+```javascript
+           init: function () {
+               ...
+               this.player = KalturaPlayer.setup(config);
+```
+
+ and then is later accessed in the `tick` lifecycle method, again via `this`
+
+```javascript
+           tick: function () {
+               ...
+               if (!this.player.paused
+```
+
+This is a very important pattern, and it used again to achieve the video click behavior for multiple videos:
+
+
 
 ### Captions Example
 
@@ -239,7 +325,7 @@ In this example, Blender was used to create a scene that integrates the video pl
 #### Setup
 
 1. Install Blender:  [Blender](https://www.blender.org/)
-2. Install the Blender aframe exporter: https://github.com/silverslade/aframe_blender_exporter
+2. Install the Blender a-frame exporter: https://github.com/silverslade/a-frame_blender_exporter
 
 A free, opensource ready-made scene was downloaded from https://sketchfab.com/feed (you'll want to install the importer plugin for Blender)
 
@@ -247,18 +333,18 @@ In the scene, a placeholder cube was created in the same dimensions (16:9) as th
 
 ![blender_cube](readme-assets/blender_cube.jpg)
 
-Once you are satisfied with you scene, use the aframe exporter to export an aframe scene:
+Once you are satisfied with you scene, use the a-frame exporter to export an a-frame scene:
 
-# ![blender_aframe](readme-assets/blender_aframe.jpg) 
+# ![blender_a-frame](readme-assets/blender_a-frame.jpg) 
 
-In the `index.html` produced by the aframe exporter,  find the cube asset you created as a placeholder, and change it to an `aframe` box. You will have to experiment with dimensions of the box between `height`, `width` and `depth` , but the position will be correct:
+In the `index.html` produced by the a-frame exporter,  find the cube asset you created as a placeholder, and change it to an `a-frame` box. You will have to experiment with dimensions of the box between `height`, `width` and `depth` , but the position will be correct:
 
 ```html
  <a-box test height="7.2" depth="12.8" position="-13.982090950012207 8.457517623901367 2.251915454864502"
       visible="true" shadow="cast: false"></a-box>
 ```
 
-As you see above, the `test` identifier was given to the box, and the same `aframe` registration code was used to initialize this box and make it a playing video. 
+As you see above, the `test` identifier was given to the box, and the same `a-frame` registration code was used to initialize this box and make it a playing video. 
 
 # Contributing
 
@@ -285,10 +371,10 @@ Authors and contributors: See [GitHub contributors list](https://github.com/kalt
 
 ### Open Source Libraries Used
 
-https://aframe.io/ 
+https://a-frame.io/ 
 
 https://threejs.org/
 
 https://www.blender.org/
 
-https://github.com/silverslade/aframe_blender_exporter
+https://github.com/silverslade/a-frame_blender_exporter

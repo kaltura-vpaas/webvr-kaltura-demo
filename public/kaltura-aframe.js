@@ -1,6 +1,6 @@
-function loadKalturaWebVR(boxId, videoSource, entryId, partnerId, playerId, ks) {
+function loadKalturaWebVR(boxName, videoSource, entryId, partnerId, playerId, ks) {
 
-    AFRAME.registerComponent(boxId, {
+    AFRAME.registerComponent(boxName, {
         schema: {
             color: { default: "green" },
             size: { type: "int", default: 5 },
@@ -98,14 +98,34 @@ function loadKalturaWebVR(boxId, videoSource, entryId, partnerId, playerId, ks) 
     });
 }
 
+/*
+* initVidClick must be run in the A-Frame lifecycle after the scene is inited 
+* 
+* it initializes the click behavior for a box to hide the aframe scene and show
+* the kaltura video as well as the inverse action to return to where user started.
+*
+* example box: <a-box box1 id="vidbox1">
+* example video source:  <div id="vid1">
+* Arguments:
+*  boxDomId: the id of the <a-box. eg: "vidbox1"
+*  videoSource: the id of the video source div eg "vid1"
+*  boxComponent: the aframe "name" for the box. eg: "box1"
+*/
+
 function initVidClick(boxDomId, videoSource, boxComponent) {
     var targetEl = document.querySelector("#" + boxDomId);
+
+    //player instance is actually stored in the aframe element
     var player = targetEl.components[boxComponent].player;
    
     targetEl.addEventListener('click', function () {
+        //hide aframe scene
         $("#mainscene").hide();
+        //show video
         $("#" + videoSource).show();
+        //show return button
         $("#back2vr").show();
+        //unmute player
         player.muted = false;
     });
 
