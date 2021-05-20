@@ -194,7 +194,7 @@ and javascript:
 
 ![twovid](readme-assets/twovid.jpg)
 
-The single click example before was a building block, but it does not scale to multiple videos. In order to handle multiple videos all of the code built thus far needs to be encapsulated so that it can be reused. So [kaltura-aframe.js](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/public/kaltura-aframe.js) was created: 
+The single click example was a building block, but it does not scale to multiple videos. In order to handle multiple videos all of the code built thus far needs to be encapsulated so that it can be reused for multiple videos. So [kaltura-aframe.js](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/public/kaltura-aframe.js) was created: 
 
 ```javascript
 function loadKalturaWebVR(boxName, videoSource, entryId, partnerId, playerId, ks) {
@@ -210,7 +210,7 @@ this.player = KalturaPlayer.setup(config);
 
 Keep in mind the context of `this` is inside of the [AFRAME framework's prototype](https://aframe.io/docs/1.2.0/core/component.html#component-prototype-properties).
 
-The Kaltura `player` is created inside of a-frame's init [lifecycle](https://aframe.io/docs/1.2.0/core/component.html#definition-lifecycle-handler-methods) method, stored in `this`:
+The Kaltura `player` is created inside of a-frame's init [lifecycle](https://aframe.io/docs/1.2.0/core/component.html#definition-lifecycle-handler-methods) method and stored in `this`:
 
 ```javascript
            init: function () {
