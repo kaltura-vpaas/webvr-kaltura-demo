@@ -65,11 +65,6 @@
           videoImageContext.fillStyle = "#000000";
           videoImageContext.fillRect(0, 0, videoImage.width, videoImage.height);
 
-          // setup text parameters for subtitles
-          videoImageContext.font = "50px Arial";
-          videoImageContext.textAlign = "center";
-          videoImageContext.textBaseline = "middle";
-
           // create threejs texture which is mapping canvas to texture
           videoTexture = new THREE.Texture(videoImage);
           videoTexture.minFilter = THREE.LinearFilter;
@@ -118,8 +113,6 @@
 </head>
 
 <body>
-  <%- include('github.ejs') %>
-
   <!-- Kaltura Player -->
   <div id="video-player" style="display: none"></div>
 

@@ -15,9 +15,6 @@
     src="https://cdnapisec.kaltura.com/p/<%=process.env.PARTNER_ID%>/embedPlaykitJs/uiconf_id/<%=process.env.PLAYER_ID%>"></script>
 
   <script type="text/javascript">
-    //document.addEventListener('click', function (evt) {
-    //  player.muted = false;
-    //});
     loadKalturaWebVR("box1", "vid1", "<%=process.env.ENTRY_ID%>", <%=process.env.PARTNER_ID %>, <%=process.env.PLAYER_ID %>, "");
     loadKalturaWebVR("box2", "vid2", "<%=process.env.ENTRY_ID%>", <%=process.env.PARTNER_ID %>, <%=process.env.PLAYER_ID %>, "");
   </script>
@@ -28,7 +25,7 @@
 
   <!-- Kaltura Player -->
   <div id="vid1" style="display: none; aspect-ratio:16/9; max-height: 85vh; margin: auto;"></div>
-  <div id="vid2" style="display: none; aspect-ratio:16/9; max-height: 85vh; margin: auto;""></div>
+  <div id="vid2" style="display: none; aspect-ratio:16/9; max-height: 85vh; margin: auto;"></div>
 
   <div class="center">
     <div id="back2vr" style="display:none;">Return</div>
