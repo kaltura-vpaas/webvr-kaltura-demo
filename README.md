@@ -228,7 +228,43 @@ The Kaltura `player` is created inside of a-frame's init [lifecycle](https://afr
 
 This is a very important pattern, and it used again to achieve the video click behavior for multiple videos:
 
+[initVidClick](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/public/kaltura-aframe.js#L102) has been refactored to access the different players:
 
+```javascript
+function initVidClick(boxDomId, videoSource, boxComponent) {
+    var targetEl = document.querySelector("#" + boxDomId);
+    //player instance is actually stored in the aframe element
+    var player = targetEl.components[boxComponent].player;
+
+```
+
+Each `<a-box>` has a kaltura player stored in it, and it is retrieved here using the [component keyword](https://aframe.io/docs/1.2.0/core/component.html#accessing-a-component%E2%80%99s-members-and-methods) from a-frame. Since there are multiple videos, the user experience must account for how to best play the audio of each video. Now that a handle to each player is available, simply call `player.muted` when the video is clicked
+
+```javascript
+    targetEl.addEventListener('click', function () {
+        //hide aframe scene
+        $("#mainscene").hide();
+        //show video
+        $("#" + videoSource).show();
+        //show return button
+        $("#back2vr").show();
+        //unmute player
+        player.muted = false;
+    });
+```
+
+and unmute when returning the user to the vr scene:
+
+```javascript
+    $("#back2vr").click(function () {
+        $("#" + videoSource).hide();
+        $("#back2vr").hide();
+        $("#mainscene").show();
+        player.muted = true;
+    });
+```
+
+As this example demonstrates, the a-frame framework provides a very robust API that allows for the creation of flexible and sophisticated user experiences. 
 
 ### Captions Example
 
@@ -318,9 +354,9 @@ Finally, through some math, the text is drawn in the correct location:
 
 ![main](readme-assets/main.jpg)
 
-Most 3d scenes are created in 3d creation application like the popular free and open source [Blender](https://www.blender.org/)
+Most 3d scenes are created in 3d creation application like the popular free and open source [Blender](https://www.blender.org/) or [Unity](https://unity.com/)
 
-In this example, Blender was used to create a scene that integrates the video player from the above examples into a more real-world use case. 
+In this example, Blender was used to create a scene that integrates the video player from the above examples into a more real-world use case. Note, this example is only a proof of concept not incorporating best practices or fully rendering the scene, hopefully it serves as a building block for the kinds of rich vr experiences possible in the realm of VR. 
 
 #### Setup
 
@@ -335,7 +371,7 @@ In the scene, a placeholder cube was created in the same dimensions (16:9) as th
 
 Once you are satisfied with you scene, use the a-frame exporter to export an a-frame scene:
 
-# ![blender_a-frame](readme-assets/blender_a-frame.jpg) 
+# ![blender_a-frame](readme-assets/blender_aframe.jpg) 
 
 In the `index.html` produced by the a-frame exporter,  find the cube asset you created as a placeholder, and change it to an `a-frame` box. You will have to experiment with dimensions of the box between `height`, `width` and `depth` , but the position will be correct:
 
