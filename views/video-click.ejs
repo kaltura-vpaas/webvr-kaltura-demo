@@ -139,8 +139,11 @@
     var targetEl = document.querySelector('#vidbox');
     targetEl.addEventListener('click', function () {
       console.log("VIDBOX");
+       //hide aframe scene
       $("#mainscene").hide();
+      //show video
       $("#video-player").show();
+      //show return button
       $("#back2vr").show();
     });
 
