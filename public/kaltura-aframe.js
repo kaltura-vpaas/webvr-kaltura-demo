@@ -117,7 +117,7 @@ function initVidClick(boxDomId, videoSource, boxComponent) {
 
     //player instance is actually stored in the aframe element
     var player = targetEl.components[boxComponent].player;
-   
+
     targetEl.addEventListener('click', function () {
         //hide aframe scene
         $("#mainscene").hide();
