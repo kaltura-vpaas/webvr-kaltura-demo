@@ -399,6 +399,10 @@ In the `index.html` produced by the a-frame exporter,  find the cube asset you c
 
 As you see above, the `test` identifier was given to the box, and the same `a-frame` registration code was used to initialize this box and make it a playing video. 
 
+### Another option for Kaltura WebVR: Brand3d
+
+[Brand3d](https://brand3d.com/), a Kaltura partner, has sophisticated and well designed tools for working with 3d objects. You may also want to consider learning about: https://knowledge.kaltura.com/help/create-and-edit-content-using-the-3d-creator-tool
+
 # Contributing
 
 Thank you for helping Kaltura grow! If you'd like to contribute please follow these steps:
