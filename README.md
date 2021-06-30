@@ -29,7 +29,7 @@ A proof of concept to demonstrate the [Kaltura Player](https://developer.kaltura
 
 <img src="readme-assets/poc.jpg" alt="poc" style="zoom:15%;" />
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/proof-of-concept.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/xr9zl) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/proof-of-concept.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/kogks) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 This is the bare minimum of code to run a Kaltura player inside of an a-frame WebVR scene. 
@@ -150,7 +150,7 @@ And due to browsers muting video that autoplays, an event listener is created to
 
 ![video-click](readme-assets/video-click.jpg)
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/video-click.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/j7ay5) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/video-click.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/pwiwx) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 In this example we create a user experience when a video object in the vr scene is clicked it will proceed to play the video in a 2d "normal" experience. A return button is created so the user can return to the 3d scene. 
@@ -200,7 +200,7 @@ and javascript:
 
 ![twovid](readme-assets/twovid.jpg)
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/twovideo.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/ulgfj) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/twovideo.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/x56hc) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 The single click example was a building block, but it does not scale to multiple videos. In order to handle multiple videos all of the code built thus far needs to be encapsulated so that it can be reused for multiple videos. So [kaltura-aframe.js](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/public/kaltura-aframe.js) was created: 
@@ -283,7 +283,7 @@ As this example demonstrates, the a-frame framework provides a very robust API t
 
 
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/captions.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/t7oal) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/captions.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/zay0a) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 Normally, the Kaltura player handles captions out of the box at the [API](https://developer.kaltura.com/workflows/Enrich_and_Organize_Metadata) level and also simply through the [KMC](https://kmc.kaltura.com/index.php/kmcng/login)
@@ -368,7 +368,7 @@ Finally, through some math, the text is drawn in the correct location:
 
 <img src="readme-assets/main.jpg" alt="main" style="zoom:15%;" />
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/blender-example.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/s5kj8) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/blender-example.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/mslas) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 Most 3d scenes are created in 3d creation application like the popular free and open source [Blender](https://www.blender.org/) or [Unity](https://unity.com/)
