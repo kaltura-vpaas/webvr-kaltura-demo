@@ -368,7 +368,7 @@ Finally, through some math, the text is drawn in the correct location:
 
 <img src="readme-assets/main.jpg" alt="main" style="zoom:15%;" />
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/blender-example.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/wwxe1) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/blender-example.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/s5kj8) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 Most 3d scenes are created in 3d creation application like the popular free and open source [Blender](https://www.blender.org/) or [Unity](https://unity.com/)
