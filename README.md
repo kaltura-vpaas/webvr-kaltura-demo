@@ -150,7 +150,7 @@ And due to browsers muting video that autoplays, an event listener is created to
 
 ![video-click](readme-assets/video-click.jpg)
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/video-click.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/tvbwb) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/video-click.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/j7ay5) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 In this example we create a user experience when a video object in the vr scene is clicked it will proceed to play the video in a 2d "normal" experience. A return button is created so the user can return to the 3d scene. 
@@ -283,7 +283,7 @@ As this example demonstrates, the a-frame framework provides a very robust API t
 
 
 
-| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/captions.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/ppy5f) |
+| [Source Code](https://github.com/kaltura-vpaas/webvr-kaltura-demo/blob/master/views/captions.ejs) | [Video Walkthrough](http://www.kaltura.com/tiny/t7oal) |
 | :----------------------------------------------------------: | :----------------------------------------------------: |
 
 Normally, the Kaltura player handles captions out of the box at the [API](https://developer.kaltura.com/workflows/Enrich_and_Organize_Metadata) level and also simply through the [KMC](https://kmc.kaltura.com/index.php/kmcng/login)
